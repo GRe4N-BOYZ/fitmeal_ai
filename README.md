@@ -1,17 +1,32 @@
-# fitmeal_ai
+# Fitmeal AI
 
-A new Flutter project.
+筋トレ・ダイエット向けAI食事管理アプリ
 
-## Getting Started
+## 概要
 
-This project is a starting point for a Flutter application.
+「Fitmeal AI」は、筋トレやダイエットを行う人向けの食事管理アプリです。
 
-A few resources to get you started if this is your first Flutter project:
+### 主な機能
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- 🍽 食事記録
+- 📊 PFCバランス表示
+- ⚖️ 体重・体脂肪率管理
+- 😴 睡眠データ連携
+- 🏃 運動データ連携
+- 🤖 AIによる栄養アドバイス
+- 追加予定
+- お得な食材情報（スーパーの価格比較等）
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## 技術スタック
+
+- Flutter
+- Dart
+- Firebase
+- Riverpod
+- Health Connect
+- OpenAI API
+
+## 開発状況
+
+🚧 開発中
