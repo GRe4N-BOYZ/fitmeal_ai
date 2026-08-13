@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/home/home_screen.dart';
+import 'screens/main_screen.dart';
 import 'core/theme.dart';
 
 void main()
@@ -22,7 +22,7 @@ class FitmealAI extends StatelessWidget
 
       theme: AppTheme.lightTheme,
 
-      home: const HomeScreen(),
+      home: const MainScreen(),
     );
   }
 }
