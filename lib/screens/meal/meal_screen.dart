@@ -1,8 +1,27 @@
 import 'package:flutter/material.dart';
+
+import '../../models/meal.dart';
 import 'add_meal_screen.dart';
 
-class MealScreen extends StatelessWidget {
+class MealScreen extends StatefulWidget {
   const MealScreen({super.key});
+
+  @override
+  State<MealScreen> createState() => _MealScreenState();
+}
+
+class _MealScreenState extends State<MealScreen> {
+  final List<Meal> meals = [];
+
+  NutritionSummary get nutritionSummary {
+    var summary = const NutritionSummary();
+
+    for (final meal in meals) {
+      summary = summary.add(meal);
+    }
+
+    return summary;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,58 +29,52 @@ class MealScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("今日の食事"),
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
+
         child: Column(
           children: [
-            // 朝食
-            _buildMealCard(
-              context,
+             _buildNutritionCard(),
+
+            const SizedBox(height: 16),
+            
+            _buildMealSection(
               "🍳 朝食",
-              "未登録",
+              "朝食",
             ),
 
             const SizedBox(height: 16),
 
-            // 昼食
-            _buildMealCard(
-              context,
+            _buildMealSection(
               "🍱 昼食",
-              "未登録",
+              "昼食",
             ),
 
             const SizedBox(height: 16),
 
-            // 夕食
-            _buildMealCard(
-              context,
+            _buildMealSection(
               "🌙 夕食",
-              "未登録",
+              "夕食",
             ),
 
             const SizedBox(height: 16),
 
-            // 間食
-            _buildMealCard(
-              context,
+            _buildMealSection(
               "🍪 間食",
-              "未登録",
+              "間食",
             ),
 
             const SizedBox(height: 24),
 
             SizedBox(
               width: double.infinity,
+
               child: FilledButton.icon(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AddMealScreen(),
-                    ),
-                  );
-                },
+                onPressed: _addMeal,
+
                 icon: const Icon(Icons.add),
+
                 label: const Text("食事を追加"),
               ),
             ),
@@ -71,34 +84,122 @@ class MealScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMealCard(
-    BuildContext context,
-    String title,
-    String value,
-  ) {
+    Widget _buildNutritionCard() {
+    final summary = nutritionSummary;
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Row(
+
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+
           children: [
-            Expanded(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+            const Text(
+              "今日の栄養",
+
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
             ),
+
+            const SizedBox(height: 16),
+
             Text(
-              value,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.outline,
-              ),
+              "カロリー  ${summary.calories.toStringAsFixed(0)} kcal",
+            ),
+
+            const SizedBox(height: 8),
+
+            Text(
+              "P  ${summary.protein.toStringAsFixed(1)} g",
+            ),
+
+            Text(
+              "F  ${summary.fat.toStringAsFixed(1)} g",
+            ),
+
+            Text(
+              "C  ${summary.carbs.toStringAsFixed(1)} g",
             ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildMealSection(
+    String title,
+    String mealType,
+  ) {
+    final typeMeals = meals
+        .where((meal) => meal.type == mealType)
+        .toList();
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+
+          children: [
+            Text(
+              title,
+
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            if (typeMeals.isEmpty)
+              const Text("未登録")
+
+            else
+              ...typeMeals.map(
+                (meal) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          meal.foodName,
+                        ),
+                      ),
+
+                      Text(
+                        "${meal.quantity.toStringAsFixed(0)} g",
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _addMeal() async {
+    final Meal? meal = await Navigator.push<Meal>(
+      context,
+
+      MaterialPageRoute(
+        builder: (context) => const AddMealScreen(),
+      ),
+    );
+
+    if (meal == null) {
+      return;
+    }
+
+    setState(() {
+      meals.add(meal);
+    });
   }
 }

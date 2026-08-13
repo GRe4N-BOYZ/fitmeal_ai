@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../models/meal.dart';
 
 class AddMealScreen extends StatefulWidget {
   const AddMealScreen({super.key});
@@ -134,13 +135,28 @@ class _AddMealScreenState extends State<AddMealScreen> {
               child: FilledButton.icon(
                 onPressed: () {
                   final food = foodController.text;
-                  final quantity = quantityController.text;
+                  final quantity = double.tryParse(
+                    quantityController.text,
+                  );
 
-                  print("食事：$selectedMeal");
-                  print("食品：$food");
-                  print("数量：$quantity");
+                  if (food.isEmpty || quantity == null) {
+                    return;
+                  }
 
-                  Navigator.pop(context);
+                  final meal = Meal(
+                    type: selectedMeal,
+                    foodName: food,
+                    quantity: quantity,
+                    calories: 250,
+                    protein: 20,
+                    fat: 5,
+                    carbs: 30,
+                  );
+
+                  Navigator.pop(
+                    context,
+                    meal,
+                  );
                 },
 
                 icon: const Icon(Icons.check),
