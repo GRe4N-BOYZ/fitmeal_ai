@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'home/home_screen.dart';
 import 'meal/meal_screen.dart';
+import 'workout/workout_screen.dart';
 import 'graph/graph_screen.dart';
 import 'settings/settings_screen.dart';
+
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -18,6 +20,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> screens = const [
     HomeScreen(),
     MealScreen(),
+    WorkoutScreen(),
     GraphScreen(),
     SettingsScreen(),
   ];
@@ -47,6 +50,12 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.restaurant_outlined),
             selectedIcon: Icon(Icons.restaurant),
             label: "食事",
+          ),
+
+          NavigationDestination(
+            icon: Icon(Icons.fitness_center_outlined),
+            selectedIcon: Icon(Icons.fitness_center),
+            label: "筋トレ",
           ),
 
           NavigationDestination(
