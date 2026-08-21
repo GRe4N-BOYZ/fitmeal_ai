@@ -147,10 +147,11 @@ class _AddMealScreenState extends State<AddMealScreen> {
                     type: selectedMeal,
                     foodName: food,
                     quantity: quantity,
-                    calories: 250,
-                    protein: 20,
-                    fat: 5,
-                    carbs: 30,
+
+                    caloriesPer100g: 113,
+                    proteinPer100g: 23.3,
+                    fatPer100g: 1.9,
+                    carbsPer100g: 0.1,
                   );
 
                   Navigator.pop(
