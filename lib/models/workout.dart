@@ -4,14 +4,15 @@ class Workout {
   final double weight;
   final int reps;
   final int sets;
-
-  final bool hadRoom;
+  final int rir;
+  final DateTime date;
 
   const Workout({
     required this.exerciseName,
     required this.weight,
     required this.reps,
     required this.sets,
-    required this.hadRoom,
+    required this.rir,
+    required this.date,
   });
 }
