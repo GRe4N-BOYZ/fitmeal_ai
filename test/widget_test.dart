@@ -8,23 +8,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:fitmeal_ai/main.dart';
+import 'package:fitmeal_ai/screens/workout/workout_menu_screen.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const FitmealAI());
+  testWidgets('creates a workout menu with an exercise', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const MaterialApp(home: WorkoutMenuScreen()));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    await tester.tap(find.text('メニューを作成'));
+    await tester.pumpAndSettle();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    await tester.enterText(find.byType(TextField).first, '胸トレ');
+    await tester.tap(find.text('種目を追加'));
+    await tester.pumpAndSettle();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await tester.enterText(find.byType(TextField).last, 'ベンチプレス');
+    await tester.tap(find.text('追加'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('ベンチプレス'), findsOneWidget);
+
+    await tester.tap(find.text('保存'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('胸トレ'), findsOneWidget);
+    expect(find.text('・ベンチプレス'), findsOneWidget);
   });
 }
