@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'workout_menu_screen.dart';
 import '../../models/workout.dart';
 import 'add_workout_screen.dart';
+import '../../services/workout_storage.dart';
 
 class WorkoutScreen extends StatefulWidget {
   final List<String>? selectedExercises;
@@ -17,11 +18,30 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   late final List<String> selectedExercises;
   final List<Workout> workouts = [];
 
+  final WorkoutStorage workoutStorage =
+      WorkoutStorage();
+
   @override
   void initState() {
     super.initState();
 
     selectedExercises = widget.selectedExercises ?? [];
+
+    _loadWorkouts();
+  }
+  
+
+  Future<void> _loadWorkouts() async {
+    final savedWorkouts =
+        await workoutStorage.loadWorkouts();
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      workouts.addAll(savedWorkouts);
+    });
   }
 
   @override
@@ -239,5 +259,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     setState(() {
       workouts.add(workout);
     });
+
+    await workoutStorage.saveWorkouts(workouts);
   }
 }
