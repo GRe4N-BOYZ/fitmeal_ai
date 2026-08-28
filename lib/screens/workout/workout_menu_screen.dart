@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../models/workout_menu.dart';
 import 'create_workout_menu_screen.dart';
+import '../../services/workout_menu_storage.dart';
+import 'workout_screen.dart';
 
 class WorkoutMenuScreen extends StatefulWidget {
   const WorkoutMenuScreen({super.key});
@@ -14,6 +16,9 @@ class WorkoutMenuScreen extends StatefulWidget {
 
 class _WorkoutMenuScreenState extends State<WorkoutMenuScreen> {
   final List<WorkoutMenu> menus = [];
+
+  final WorkoutMenuStorage menuStorage =
+      WorkoutMenuStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +88,30 @@ class _WorkoutMenuScreenState extends State<WorkoutMenuScreen> {
 
                 child: Text("・$exercise"),
               ),
+
+            const SizedBox(height: 12),
+
+            SizedBox(
+              width: double.infinity,
+
+              child: FilledButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+
+                    MaterialPageRoute(
+                      builder: (context) => WorkoutScreen(
+                        selectedExercises: menu.exercises,
+                      ),
+                    ),
+                  );
+                },
+
+                icon: const Icon(Icons.play_arrow),
+
+                label: const Text("このメニューで開始"),
+              ),
+            ),
           ],
         ),
       ),
@@ -102,6 +131,28 @@ class _WorkoutMenuScreenState extends State<WorkoutMenuScreen> {
 
     setState(() {
       menus.add(menu);
+    });
+
+    await menuStorage.saveMenus(menus);
+  }
+
+  @override
+void initState() {
+  super.initState();
+
+  _loadMenus();
+}
+
+  Future<void> _loadMenus() async {
+    final savedMenus =
+        await menuStorage.loadMenus();
+
+    if (!mounted) {
+        return;
+    }
+
+  setState(() {
+      menus.addAll(savedMenus);
     });
   }
 }
