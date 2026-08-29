@@ -84,9 +84,15 @@ class _WorkoutMenuScreenState extends State<WorkoutMenuScreen> {
 
             for (final exercise in menu.exercises)
               Padding(
-                padding: const EdgeInsets.only(bottom: 4),
+                padding: const EdgeInsets.only(bottom: 8),
 
-                child: Text("・$exercise"),
+                child: Text(
+                  "・${exercise.exerciseName}\n"
+                  "  ${exercise.weight} kg × "
+                  "${exercise.reps}回 × "
+                  "${exercise.sets}セット / "
+                  "RIR ${exercise.rir}",
+                ),
               ),
 
             const SizedBox(height: 12),
