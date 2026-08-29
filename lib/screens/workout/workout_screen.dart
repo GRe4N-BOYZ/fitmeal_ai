@@ -4,9 +4,10 @@ import 'workout_menu_screen.dart';
 import '../../models/workout.dart';
 import 'add_workout_screen.dart';
 import '../../services/workout_storage.dart';
+import '../../models/workout_menu_exercise.dart';
 
 class WorkoutScreen extends StatefulWidget {
-  final List<String>? selectedExercises;
+  final List<WorkoutMenuExercise>? selectedExercises;
 
   const WorkoutScreen({super.key, this.selectedExercises});
 
@@ -15,7 +16,7 @@ class WorkoutScreen extends StatefulWidget {
 }
 
 class _WorkoutScreenState extends State<WorkoutScreen> {
-  late final List<String> selectedExercises;
+  late final List<WorkoutMenuExercise> selectedExercises;
   final List<Workout> workouts = [];
 
   final WorkoutStorage workoutStorage =
@@ -94,7 +95,17 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                       const SizedBox(height: 8),
 
                       for (final exercise in selectedExercises)
-                        Text("・$exercise"),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+
+                          child: Text(
+                            "・${exercise.exerciseName}\n"
+                            "  ${exercise.weight} kg × "
+                            "${exercise.reps}回 × "
+                            "${exercise.sets}セット / "
+                            "RIR ${exercise.rir}",
+                          ),
+                        ),
                     ],
                   ),
                 ),

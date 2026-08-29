@@ -1,12 +1,6 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:fitmeal_ai/screens/workout/workout_menu_screen.dart';
 
@@ -14,25 +8,39 @@ void main() {
   testWidgets('creates a workout menu with an exercise', (
     WidgetTester tester,
   ) async {
+    SharedPreferences.setMockInitialValues({});
+
     await tester.pumpWidget(const MaterialApp(home: WorkoutMenuScreen()));
-
-    await tester.tap(find.text('メニューを作成'));
     await tester.pumpAndSettle();
 
-    await tester.enterText(find.byType(TextField).first, '胸トレ');
-    await tester.tap(find.text('種目を追加'));
+    await tester.tap(find.byType(FilledButton));
     await tester.pumpAndSettle();
 
-    await tester.enterText(find.byType(TextField).last, 'ベンチプレス');
-    await tester.tap(find.text('追加'));
+    await tester.enterText(find.byType(TextField).first, 'テストメニュー');
+    await tester.tap(find.byType(OutlinedButton));
+    await tester.pumpAndSettle();
+
+    final textFields = find.byType(TextField);
+    await tester.enterText(textFields.at(1), 'ベンチプレス');
+    await tester.enterText(textFields.at(2), '60');
+    await tester.enterText(textFields.at(3), '10');
+    await tester.enterText(textFields.at(4), '3');
+    await tester.enterText(textFields.at(5), '2');
+
+    await tester.tap(
+      find.descendant(
+        of: find.byType(AlertDialog),
+        matching: find.byType(FilledButton),
+      ),
+    );
     await tester.pumpAndSettle();
 
     expect(find.text('ベンチプレス'), findsOneWidget);
 
-    await tester.tap(find.text('保存'));
+    await tester.tap(find.byType(FilledButton));
     await tester.pumpAndSettle();
 
-    expect(find.text('胸トレ'), findsOneWidget);
-    expect(find.text('・ベンチプレス'), findsOneWidget);
+    expect(find.text('テストメニュー'), findsOneWidget);
+    expect(find.textContaining('ベンチプレス'), findsOneWidget);
   });
 }
