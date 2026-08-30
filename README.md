@@ -14,8 +14,8 @@
 ### 現在の実装画面
 
 <p align="center">
-  <img src="./docs/images/workout_menu.png" width="250">
-  <img src="./docs/images/add_workout.png" width="250">
+  <img src="./docs/images/home_menu.jpg" width="250">
+  <img src="./docs/images/add_workout.jpg" width="250">
 </p>
 
 現在は、筋トレメニューの登録・管理機能を中心に開発しています。
